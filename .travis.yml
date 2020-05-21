@@ -1,0 +1,22 @@
+sudo: required 
+
+services:
+    -docker
+
+before_install:
+    - docker build -t jdpowers/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=true USERNAME/react-test npm test 
+    
+after-success: 
+    - docker build -t jdpowers/multi-client ./client 
+    - docker build -t jdpowers/multi-nginx ./nginx
+    - docker build -t jdpowers/multi-worker ./worker
+    - docker build -t jdpowers/multi-server ./server 
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    - docker push jdpowers/multi-client
+    - docker push jdpowers/multi-nginx
+    - docker push jdpowers/multi-server
+    - docker push jdpowers/multi-worker
+    
