@@ -14,7 +14,7 @@ after-success:
     - docker build -t jdpowers/multi-nginx ./nginx
     - docker build -t jdpowers/multi-worker ./worker
     - docker build -t jdpowers/multi-server ./server 
-    - echo "\$DOCKER_PASSWORD" | docker login -u "\$DOCKER_ID" --password-stdin
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
     - docker push jdpowers/multi-client
     - docker push jdpowers/multi-nginx
     - docker push jdpowers/multi-server
